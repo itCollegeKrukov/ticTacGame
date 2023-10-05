@@ -6,14 +6,15 @@ rooms = []
 class YourConsumer(AsyncConsumer):
 
     async def websocket_connect(self, event):
-        print(dir(event))
         clients.append(self)
         await self.send({"type": "websocket.accept"})
 
     async def websocket_receive(self, text_data):
+        print(text_data)
 
+        if text_data['text'].startswith('create'):
+            text_data
         for i in clients:
-            print(i)
             if i != self:
                 await i.send({"type": "websocket.send", "text": text_data['text']})
 
